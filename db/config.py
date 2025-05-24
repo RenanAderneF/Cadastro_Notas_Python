@@ -1,0 +1,24 @@
+from configparser import ConfigParser
+
+def config(filename='db.ini', section='postgresql'):
+    
+    #Cria parser
+    parser = ConfigParser()
+    
+    #Lê arquivo de inicialização
+    parser.read(filename, encoding='latin-1')
+
+
+	#Cria dicionário a receber os conjuntos chave-valor do .ini
+    db = {}
+    
+    #Itera sobre cada conjunto, incluindo-os no dicionário criado
+    if parser.has_section(section):
+        params = parser.items(section)
+        for param in params:
+            db[param[0]] = param[1]
+    
+    else:
+        raise Exception(f"Seção {section} não encontrada em {filename}.")
+    
+    return db 
