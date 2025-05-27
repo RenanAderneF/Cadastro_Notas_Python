@@ -1,4 +1,4 @@
-import psycopg2 as p2
+import psycopg2 as p2 
 from config import config
 
 #Funções realizam conexão com banco, utilizando dicionário contendo parâmetros de conexão, retornado da função config(), do arquivo config.py, assim realizando uma consulta e então fechando a conexão.
