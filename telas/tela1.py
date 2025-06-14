@@ -13,7 +13,7 @@ e2 = tkinter.Entry(frame)
 e2.grid(row=1, column=1)
 m.title('Cadastrar')
 button = tkinter.Button(m, text='Cadastrar', width=25, command=m.destroy)
-button.pack() #add widget
+button.pack() #add widget #escri algo aqui
 m.mainloop()
 
 
