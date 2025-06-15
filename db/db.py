@@ -1,45 +1,16 @@
-import psycopg2 as p2 
-from config import config
+import os
+import psycopg2
+
+# Carrega variável de ambiente com string de conexão do banco:
+database_url = os.getenv('DATABASE_URL')
 
 #Funções realizam conexão com banco, utilizando dicionário contendo parâmetros de conexão, retornado da função config(), do arquivo config.py, assim realizando uma consulta e então fechando a conexão.
-
-def testaConn():
-    
-    conn = None
-    try:
-
-        #Recebe dicionário correspondente aos dados de conexão:
-        params = config()
-
-        #Realiza conexão com banco utilizando parâmetros recebidos.
-        conn = p2.connect(**params)
-
-        #Permite executar comandos SQL na sessão atual:
-        cur = conn.cursor()
-
-        #Consulta versão do banco e a exibe:
-        cur.execute('SELECT version()')
-        db_version = cur.fetchone()
-        print(db_version)
-        cur.close()
-
-    except (Exception, p2.DatabaseError) as error:
-        print(error)
-        
-    finally:
-        if conn is not None:
-            conn.close()
-            print("Conexão com banco finalizada.")
 
 def cadastraAluno(nome, matricula):
     conn = None
     try:
-
-        #Recebe dicionário correspondente aos dados de conexão:
-        params = config()
-
-        #Realiza conexão com banco utilizando parâmetros recebidos.
-        conn = p2.connect(**params)
+        # Conexão com banco:
+        conn = psycopg2.connect(database_url)
 
         #Permite executar comandos SQL na sessão atual:
         cur = conn.cursor()
@@ -47,13 +18,15 @@ def cadastraAluno(nome, matricula):
         #Insere aluno, utilizando argumentos da função:
         cur.execute('INSERT INTO aluno (nome, matricula) VALUES (%s, %s)', (nome, matricula))
 
+        print("foi")
+
         #Confirma transação:
         conn.commit()
         print("Aluno cadastrado!")
 
         cur.close()
 
-    except (Exception, p2.DatabaseError) as error:
+    except (Exception) as error:
         print(error)
         
     finally:
@@ -64,12 +37,8 @@ def cadastraAluno(nome, matricula):
 def getAlunos():
     conn = None
     try:
-
-        #Recebe dicionário correspondente aos dados de conexão:
-        params = config()
-
-        #Realiza conexão com banco utilizando parâmetros recebidos.
-        conn = p2.connect(**params)
+        # Conexão com banco:
+        conn = psycopg2.connect(database_url)
 
         #Permite executar comandos SQL na sessão atual:
         cur = conn.cursor()
@@ -86,7 +55,7 @@ def getAlunos():
         print(alunos)
         return alunos
 
-    except (Exception, p2.DatabaseError) as error:
+    except (Exception) as error:
         print(error)
         
     finally:
@@ -97,12 +66,8 @@ def getAlunos():
 def addDisciplina(nome):
     conn = None
     try:
-
-        #Recebe dicionário correspondente aos dados de conexão:
-        params = config()
-
-        #Realiza conexão com banco utilizando parâmetros recebidos.
-        conn = p2.connect(**params)
+        # Conexão com banco:
+        conn = psycopg2.connect(database_url)
 
         #Permite executar comandos SQL na sessão atual:
         cur = conn.cursor()
@@ -117,7 +82,7 @@ def addDisciplina(nome):
         cur.close()
         
 
-    except (Exception, p2.DatabaseError) as error:
+    except (Exception) as error:
         print(error)
         
     finally:
@@ -129,11 +94,8 @@ def getDisciplinas():
     conn = None
     try:
 
-        #Recebe dicionário correspondente aos dados de conexão:
-        params = config()
-
-        #Realiza conexão com banco utilizando parâmetros recebidos.
-        conn = p2.connect(**params)
+        # Conexão com banco:
+        conn = psycopg2.connect(database_url)
 
         #Permite executar comandos SQL na sessão atual:
         cur = conn.cursor()
@@ -150,7 +112,7 @@ def getDisciplinas():
         print(disciplinas)
         return disciplinas
 
-    except (Exception, p2.DatabaseError) as error:
+    except (Exception) as error:
         print(error)
         
     finally:
@@ -162,11 +124,8 @@ def addAvaliacao(matricula, nome_disciplina, nota1, nota2, data_avaliacao):
     conn = None
     try:
 
-        #Recebe dicionário correspondente aos dados de conexão:
-        params = config()
-
-        #Realiza conexão com banco utilizando parâmetros recebidos.
-        conn = p2.connect(**params)
+        # Conexão com banco:
+        conn = psycopg2.connect(database_url)
 
         #Permite executar comandos SQL na sessão atual:
         cur = conn.cursor()
@@ -181,10 +140,11 @@ def addAvaliacao(matricula, nome_disciplina, nota1, nota2, data_avaliacao):
         cur.close()
         
 
-    except (Exception, p2.DatabaseError) as error:
+    except (Exception) as error:
         print(error)
         
     finally:
         if conn is not None:
             conn.close()
             print("Conexão com banco finalizada.")
+
