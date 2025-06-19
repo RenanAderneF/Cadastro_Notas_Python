@@ -52,7 +52,6 @@ def getAlunos():
 
         cur.close()
 
-        print(alunos)
         return alunos
 
     except (Exception) as error:
@@ -147,4 +146,3 @@ def addAvaliacao(matricula, nome_disciplina, nota1, nota2, data_avaliacao):
         if conn is not None:
             conn.close()
             print("Conexão com banco finalizada.")
-
