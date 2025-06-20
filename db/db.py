@@ -176,6 +176,3 @@ def getAvaliacoes():
         if conn is not None:
             conn.close()
             print("Conexão com banco finalizada.")
-
-
-getAvaliacoes()
