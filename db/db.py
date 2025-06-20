@@ -6,6 +6,7 @@ database_url = os.getenv('DATABASE_URL')
 
 #Funções realizam conexão com banco, utilizando dicionário contendo parâmetros de conexão, retornado da função config(), do arquivo config.py, assim realizando uma consulta e então fechando a conexão.
 
+
 def cadastraAluno(nome, matricula):
     conn = None
     try:
@@ -72,7 +73,7 @@ def addDisciplina(nome):
         cur = conn.cursor()
 
         #Insere disciplina, utilizando argumentos da função:
-        cur.execute('INSERT INTO disciplina (nome) VALUES (%s)', (nome))
+        cur.execute('INSERT INTO disciplina (nome) VALUES (%s)', (nome,))
         
         #Confirma transação:
         conn.commit()
@@ -146,3 +147,35 @@ def addAvaliacao(matricula, nome_disciplina, nota1, nota2, data_avaliacao):
         if conn is not None:
             conn.close()
             print("Conexão com banco finalizada.")
+
+def getAvaliacoes(): 
+    conn = None
+    try:
+
+        # Conexão com banco:
+        conn = psycopg2.connect(database_url)
+
+        #Permite executar comandos SQL na sessão atual:
+        cur = conn.cursor()
+
+        #Insere aluno, utilizando argumentos da função:
+        cur.execute('SELECT al.nome, d.nome, nota1, nota2, data_avaliacao FROM avaliacao av INNER JOIN aluno al ON al.id = av.aluno_id INNER JOIN disciplina d ON d.id = av.disciplina_id')
+        avaliacoes = cur.fetchall()
+        
+        #Confirma transação:
+        conn.commit()
+
+        cur.close()
+        
+        return avaliacoes
+
+    except (Exception) as error:
+        print(error)
+        
+    finally:
+        if conn is not None:
+            conn.close()
+            print("Conexão com banco finalizada.")
+
+
+getAvaliacoes()
